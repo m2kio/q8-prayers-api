@@ -14,7 +14,6 @@ async function handleRequest(request) {
   }
 
   try {
-
     let today = new Date()
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
@@ -106,20 +105,20 @@ async function handleRequest(request) {
         }
       }
       
-      return new Response(JSON.stringify({ status: 200, data: prayers }), {
+      return new Response(JSON.stringify({ status: 200, statusText: 'OK', data: prayers }), {
         status: 200,
         headers: { ...headers }
       })
 
     }else{
-      return new Response(JSON.stringify({ status: 500, error: 'Internal Server Error' }), {
+      return new Response(JSON.stringify({ status: 500, statusText: 'Internal Server Error' }), {
         status: 500,
         headers: { ...headers },
       })
     }
 
   } catch (error) {
-    return new Response(JSON.stringify({ status: 500, error: 'Internal Server Error' }), {
+    return new Response(JSON.stringify({ status: 500, statusText: 'Internal Server Error' }), {
       status: 500,
       headers: { ...headers },
     })
