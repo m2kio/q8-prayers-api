@@ -3,14 +3,13 @@
   "version": "1.0.3",
   "description": "Kuwait Prayer Times API",
   "main": "index.js",
-  "keywords": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/m2k95/q8-prayers-api"
+    "url": "https://github.com/m2kio/q8-prayers-api"
   },
   "author": {
-    "name": "Mohammad AlFailkawi",
-    "email": "m.filkawi@gmail.com"
+    "name": "MYK",
+    "email": "m2kio@pm.me"
   },
   "homepage": "https://api.q8prayers.com",
   "license": "MIT"
