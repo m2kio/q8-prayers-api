@@ -105,7 +105,7 @@ async function handleRequest(request) {
         }
       }
       
-      return new Response(JSON.stringify({ status: 200, statusText: 'OK', data: prayers }), {
+      return new Response(JSON.stringify({ status: 200, statusText: 'OK', timings: prayers }), {
         status: 200,
         headers: { ...headers }
       })
