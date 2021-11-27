@@ -47,6 +47,7 @@ async function handleRequest(request) {
       const Asr = res.data.timings.Asr
       const Maghrib = res.data.timings.Maghrib
       const Isha = res.data.timings.Isha
+      const HijriDate = res.data.date.hijri.date
   
       const prayers = {
         Fajr: {
@@ -99,13 +100,20 @@ async function handleRequest(request) {
             time: `${reformatDate('ar', Isha).toArabicNumbers()}`
           }
         },
-        Date: {
+      }
+      
+      const dates = {
+        hijri: {
+          en: HijriDate,
+          ar: HijriDate.toArabicNumbers()
+        },
+        gregorian: {
           en: today,
           ar: today.toArabicNumbers()
         }
       }
       
-      return new Response(JSON.stringify({ status: 200, statusText: 'OK', timings: prayers }), {
+      return new Response(JSON.stringify({ status: 200, statusText: 'OK', timings: prayers, date: dates }), {
         status: 200,
         headers: { ...headers }
       })
