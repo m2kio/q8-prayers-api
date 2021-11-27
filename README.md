@@ -1,4 +1,5 @@
 # Kuwait Prayer Times API
+Based on [AlAdhan API](https://aladhan.com/prayer-times-api)
 
 ## Usage
 ```bash
