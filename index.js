@@ -104,12 +104,24 @@ async function handleRequest(request) {
       
       const dates = {
         hijri: {
-          en: HijriDate,
-          ar: HijriDate.toArabicNumbers()
+          en: {
+            name: 'Hijri',
+            date: HijriDate
+          },
+          ar: {
+            name: 'هجري',
+            date: HijriDate.toArabicNumbers()
+          }
         },
         gregorian: {
-          en: today,
-          ar: today.toArabicNumbers()
+          en: {
+            name: 'Gregorian',
+            date: today
+          },
+          ar: {
+            name: 'ميلادي',
+            date: today.toArabicNumbers()
+          }
         }
       }
       
