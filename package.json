@@ -1,6 +1,6 @@
 {
   "name": "q8-prayers-api",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Kuwait Prayer Times API",
   "main": "index.js",
   "repository": {
