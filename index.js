@@ -1,3 +1,5 @@
+import PrayTimes from './PrayTimes'
+
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
@@ -12,6 +14,14 @@ async function handleRequest(request) {
     'Access-Control-Allow-Methods': 'GET',
     'Content-Type': 'application/json; charset=utf-8'
   }
+
+  // TODO: fix praytimes
+
+  const LATITUDE = 29.379709
+  const LONGITUDE = 47.973563
+
+  PrayTimes.setMethod('MWL')
+  const times = PrayTimes.getTimes(new Date(), [LATITUDE, LONGITUDE], +3)
 
   try {
     let today = new Date()
