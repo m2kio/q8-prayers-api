@@ -572,5 +572,10 @@ var DMath = {
 
 //---------------------- Init Object -----------------------
 
+const LATITUDE = 29.379709
+const LONGITUDE = 47.973563
+const PT = new PrayTimes()
+PT.setMethod('MWL')
+const times = PT.getTimes(new Date(), [LATITUDE, LONGITUDE], +3)
 
-export default new PrayTimes();
+export default times
