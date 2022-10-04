@@ -95,7 +95,7 @@ curl api.q8prayers.com
 - Initialize a **Workers** project 
   - `$ wrangler init q8-prayers-api`
 - Develop 
-  - `$ wrangler preview --watch`
+  - `$ wrangler dev`
 
 Further documentation for **Wrangler** can be found [here](https://developers.cloudflare.com/workers/tooling/wrangler).
 
