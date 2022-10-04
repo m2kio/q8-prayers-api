@@ -1,4 +1,4 @@
-import PrayTimes from './PrayTimes'
+import times from './PrayTimes'
 
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
@@ -15,20 +15,15 @@ async function handleRequest(request) {
     'Content-Type': 'application/json; charset=utf-8'
   }
 
-  // TODO: fix praytimes
-
-  const LATITUDE = 29.379709
-  const LONGITUDE = 47.973563
-
-  PrayTimes.setMethod('MWL')
-  const times = PrayTimes.getTimes(new Date(), [LATITUDE, LONGITUDE], +3)
-
   try {
     let today = new Date()
     const dd = String(today.getDate()).padStart(2, '0')
     const mm = String(today.getMonth() + 1).padStart(2, '0')
     const yyyy = today.getFullYear()
     today = dd + '-' + mm + '-' + yyyy
+
+    // TODO: fix/configure the hijri date
+    // console.log(new Intl.DateTimeFormat('en-AR-u-ca-islamic').format(Date.now()))
 
     String.prototype.toArabicNumbers = function(){
       var id= ['٠', '١', '٢', '٣', '٤' ,'٥', '٦', '٧', '٨', '٩']
@@ -50,102 +45,93 @@ async function handleRequest(request) {
       return parseInt(h) > 12 ? `${parseInt(h) - 12}:${m} ${ampm}` : `${parseInt(h)}:${m} ${ampm}`
     }
 
-    const res = await (await fetch(`https://api.aladhan.com/v1/timingsByAddress/${today}?address=kuwait,al-asimah&method=9`)).json()
-    if (res.code === 200) {
-      const Fajr = res.data.timings.Fajr
-      const Dhuhr = res.data.timings.Dhuhr
-      const Asr = res.data.timings.Asr
-      const Maghrib = res.data.timings.Maghrib
-      const Isha = res.data.timings.Isha
-      const HijriDate = res.data.date.hijri.date
-  
-      const prayers = {
-        Fajr: {
-          en: {
-            name: 'Fajr',
-            time: `${reformatDate('en', Fajr)}`
-          },
-          ar: {
-            name: 'الفجر',
-            time: `${reformatDate('ar', Fajr).toArabicNumbers()}`
-          }
+    const Fajr = times.fajr
+    const Dhuhr = times.dhuhr
+    const Asr = times.asr
+    const Maghrib = times.maghrib
+    const Isha = times.isha
+    // const HijriDate = res.data.date.hijri.date
+
+    const prayers = {
+      Fajr: {
+        en: {
+          name: 'Fajr',
+          time: `${reformatDate('en', Fajr)}`
         },
-        Dhuhr: {
-          en: {
-            name: 'Dhuhr',
-            time: `${reformatDate('en', Dhuhr)}`
-          },
-          ar: {
-            name: 'الظُهر',
-            time: `${reformatDate('ar', Dhuhr).toArabicNumbers()}`
-          }
+        ar: {
+          name: 'الفجر',
+          time: `${reformatDate('ar', Fajr).toArabicNumbers()}`
+        }
+      },
+      Dhuhr: {
+        en: {
+          name: 'Dhuhr',
+          time: `${reformatDate('en', Dhuhr)}`
         },
-        Asr: {
-          en: {
-            name: 'Asr',
-            time: `${reformatDate('en', Asr)}`
-          },
-          ar: {
-            name: 'العصر',
-            time: `${reformatDate('ar', Asr).toArabicNumbers()}`
-          }
+        ar: {
+          name: 'الظُهر',
+          time: `${reformatDate('ar', Dhuhr).toArabicNumbers()}`
+        }
+      },
+      Asr: {
+        en: {
+          name: 'Asr',
+          time: `${reformatDate('en', Asr)}`
         },
-        Maghrib: {
-          en: {
-            name: 'Maghrib',
-            time: `${reformatDate('en', Maghrib)}`
-          },
-          ar: {
-            name: 'المغرب',
-            time: `${reformatDate('ar', Maghrib).toArabicNumbers()}`
-          }
+        ar: {
+          name: 'العصر',
+          time: `${reformatDate('ar', Asr).toArabicNumbers()}`
+        }
+      },
+      Maghrib: {
+        en: {
+          name: 'Maghrib',
+          time: `${reformatDate('en', Maghrib)}`
         },
-        Isha: {
-          en: {
-            name: 'Isha',
-            time: `${reformatDate('en', Isha)}`
-          },
-          ar: {
-            name: 'العِشاء',
-            time: `${reformatDate('ar', Isha).toArabicNumbers()}`
-          }
+        ar: {
+          name: 'المغرب',
+          time: `${reformatDate('ar', Maghrib).toArabicNumbers()}`
+        }
+      },
+      Isha: {
+        en: {
+          name: 'Isha',
+          time: `${reformatDate('en', Isha)}`
         },
-      }
-      
-      const dates = {
-        hijri: {
-          en: {
-            name: 'Hijri',
-            date: HijriDate
-          },
-          ar: {
-            name: 'هجري',
-            date: HijriDate.toArabicNumbers()
-          }
+        ar: {
+          name: 'العِشاء',
+          time: `${reformatDate('ar', Isha).toArabicNumbers()}`
+        }
+      },
+    }
+    
+    const dates = {
+      // hijri: {
+      //   en: {
+      //     name: 'Hijri',
+      //     date: HijriDate
+      //   },
+      //   ar: {
+      //     name: 'هجري',
+      //     date: HijriDate.toArabicNumbers()
+      //   }
+      // },
+      gregorian: {
+        en: {
+          name: 'Gregorian',
+          date: today
         },
-        gregorian: {
-          en: {
-            name: 'Gregorian',
-            date: today
-          },
-          ar: {
-            name: 'ميلادي',
-            date: today.toArabicNumbers()
-          }
+        ar: {
+          name: 'ميلادي',
+          date: today.toArabicNumbers()
         }
       }
-      
-      return new Response(JSON.stringify({ status: 200, statusText: 'OK', timings: prayers, date: dates }), {
-        status: 200,
-        headers: { ...headers }
-      })
-
-    }else{
-      return new Response(JSON.stringify({ status: 500, statusText: 'Internal Server Error' }), {
-        status: 500,
-        headers: { ...headers },
-      })
     }
+    
+    return new Response(JSON.stringify({ status: 200, statusText: 'OK', timings: prayers, date: dates }), {
+      status: 200,
+      headers: { ...headers }
+    })
 
   } catch (error) {
     return new Response(JSON.stringify({ status: 500, statusText: 'Internal Server Error' }), {
